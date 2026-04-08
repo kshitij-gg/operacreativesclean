@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import AnimatedRoutes from "./components/AnimatedRoutes";
 import Preloader from "./components/Preloader";
+import ScrollProgress from "./components/ScrollProgress";
 
 const queryClient = new QueryClient();
 

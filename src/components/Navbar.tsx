@@ -65,7 +65,7 @@ const Navbar = () => {
         } ${isMobileMenuOpen ? 'bg-background/95 backdrop-blur-md text-foreground' : isDifferenceMode ? 'bg-transparent text-white' : 'bg-transparent text-foreground'
         }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-20">
         <div className="flex items-center justify-between h-16 sm:h-24">
           {/* Logo */}
           <a
@@ -91,7 +91,7 @@ const Navbar = () => {
             </MagneticButton>
             <MagneticButton strength={15}>
               <button
-                onClick={() => goToSection('portfolio')}
+                onClick={() => { setIsMobileMenuOpen(false); navigate('/more-work'); }}
                 className="text-[15px] font-medium opacity-80 hover:opacity-100 transition-opacity uppercase tracking-[0.18em] py-2"
               >
                 Work
@@ -132,7 +132,7 @@ const Navbar = () => {
                 About
               </button>
               <button
-                onClick={() => goToSection('portfolio')}
+                onClick={() => { setIsMobileMenuOpen(false); navigate('/more-work'); }}
                 className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors uppercase tracking-[0.12em] py-1"
               >
                 Work

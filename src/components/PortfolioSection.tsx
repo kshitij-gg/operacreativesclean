@@ -1,297 +1,282 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
-import ReelCounter from '@/components/ReelCounter';
-import MagneticButton from '@/components/MagneticButton';
-import GlitchImage from '@/components/GlitchImage';
+import { useRef, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Play } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
 import portfolio1 from '@/assets/portfolio-1.jpg';
 import portfolio2 from '@/assets/portfolio-2.jpg';
 import portfolio3 from '@/assets/portfolio-3.jpg';
 import portfolio4 from '@/assets/portfolio-4.jpg';
 
-const projects = [
-  { image: portfolio1, title: 'Neon Horizons', category: 'AI Commercial' },
-  { image: portfolio2, title: 'Silent Echo', category: 'AI Film' },
-  { image: portfolio3, title: 'Fluid Motion', category: 'Visual Campaign' },
-  { image: portfolio4, title: 'Crystal Vision', category: 'AI Commercial' },
+/* ─── Strip data ─── */
+const strips = [
+  {
+    image: portfolio1,
+    title: 'AI Commercials',
+    subtitle: 'Performance-driven ads crafted by AI',
+    tag: 'Commercial',
+    videoUrl: 'https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4',
+  },
+  {
+    image: portfolio2,
+    title: 'AI Films',
+    subtitle: 'Cinematic narratives, fully AI-generated',
+    tag: 'Film',
+    videoUrl: 'https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4',
+  },
+  {
+    image: portfolio3,
+    title: 'Visual Campaigns',
+    subtitle: 'Scroll-stopping visuals at scale',
+    tag: 'Campaign',
+    videoUrl: 'https://videos.pexels.com/video-files/4065924/4065924-uhd_2560_1440_24fps.mp4',
+  },
+  {
+    image: portfolio4,
+    title: 'More Projects',
+    subtitle: 'Explore the full portfolio',
+    tag: 'View All',
+    videoUrl: null,
+    isMoreLink: true,
+  },
 ];
 
-const PortfolioSection = () => {
-  const navigate = useNavigate();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [scrollRange, setScrollRange] = useState(0);
+/* ─── Individual Strip ─── */
+const ProjectStrip = ({
+  strip,
+  index,
+  isExpanded,
+  anyExpanded,
+  onHover,
+  onLeave,
+  onClick,
+}: {
+  strip: (typeof strips)[0];
+  index: number;
+  isExpanded: boolean;
+  anyExpanded: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+  onClick: () => void;
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const measure = () => {
-      if (trackRef.current) {
-        const trackWidth = trackRef.current.scrollWidth;
-        const viewportWidth = window.innerWidth;
-        setScrollRange(trackWidth - viewportWidth);
-      }
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, []);
+  const handleHoverStart = useCallback(() => {
+    onHover();
+    if (videoRef.current && strip.videoUrl) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [onHover, strip.videoUrl]);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], [0, -scrollRange]);
-
-  // Parallax header
-  const headerY = useTransform(scrollYProgress, [0, 0.4], [0, 150]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.15, 0.4], [1, 1, 0]);
+  const handleHoverEnd = useCallback(() => {
+    onLeave();
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  }, [onLeave]);
 
   return (
-    <section
-      id="portfolio"
-      ref={sectionRef}
-      className="relative bg-background"
-      style={{ height: `${Math.max(scrollRange + window.innerHeight + window.innerWidth * 0.5, window.innerHeight * 2)}px` }}
+    <motion.div
+      className="relative overflow-hidden cursor-pointer group"
+      onMouseEnter={handleHoverStart}
+      onMouseLeave={handleHoverEnd}
+      onClick={onClick}
+      animate={{ flex: isExpanded ? 4 : 1 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      data-cursor-hover
     >
-      {/* Sticky viewport */}
-      <div
-        className="sticky top-0 h-screen w-full flex items-center overflow-hidden"
-        style={{ perspective: '800px' }}
-      >
-        {/* P1: Circular progress ring counter */}
-        <ReelCounter scrollProgress={scrollYProgress} totalReels={projects.length} />
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src={strip.image}
+          alt={strip.title}
+          className="w-full h-full object-cover transition-transform duration-700 ease-out"
+          style={{ transform: isExpanded ? 'scale(1.05)' : 'scale(1.15)' }}
+        />
+      </div>
 
-        {/* Parallaxed Header */}
+      {/* Video layer */}
+      {strip.videoUrl && (
         <motion.div
-          style={{ y: headerY, opacity: headerOpacity }}
-          className="absolute top-[12vh] sm:top-[15vh] left-0 right-0 container mx-auto px-4 sm:px-6 lg:px-12 z-20 pointer-events-auto flex items-end justify-between"
+          className="absolute inset-0"
+          animate={{ opacity: isExpanded ? 1 : 0 }}
+          transition={{ duration: 0.5 }}
         >
+          <video
+            ref={videoRef}
+            src={strip.videoUrl}
+            muted
+            loop
+            playsInline
+            preload="none"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+      )}
+
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0 transition-opacity duration-500"
+        style={{
+          background: isExpanded
+            ? 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.25) 100%)'
+            : 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%)',
+        }}
+      />
+
+      {/* Strip index number — top left */}
+      <div className="absolute top-5 left-5 z-20 pointer-events-none">
+        <span className="font-mono text-[10px] tracking-[0.3em] text-white/35">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* ── Vertical rotated tag — visible in collapsed state, fades out on expand ── */}
+      <motion.div
+        className="absolute inset-y-0 right-4 z-20 pointer-events-none flex items-center"
+        animate={{ opacity: anyExpanded && !isExpanded ? 0.25 : isExpanded ? 0 : 0.55 }}
+        transition={{ duration: 0.4 }}
+      >
+        <span
+          className="font-mono text-[9px] sm:text-[10px] tracking-[0.3em] text-white uppercase whitespace-nowrap"
+          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+        >
+          {strip.tag}
+        </span>
+      </motion.div>
+
+      {/* Content — bottom */}
+      <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 z-20 pointer-events-none">
+        <motion.h3
+          className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white uppercase tracking-wide leading-tight"
+          animate={{ scale: isExpanded ? 1.04 : 1 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {strip.title}
+        </motion.h3>
+
+        {/* Subtitle */}
+        <motion.p
+          className="font-mono text-xs sm:text-sm text-white/60 tracking-wide mt-2"
+          animate={{ opacity: isExpanded ? 1 : 0, y: isExpanded ? 0 : 10 }}
+          transition={{ duration: 0.4, delay: isExpanded ? 0.15 : 0 }}
+        >
+          {strip.subtitle}
+        </motion.p>
+
+        {/* More Projects CTA */}
+        {strip.isMoreLink && (
+          <motion.div
+            className="flex items-center gap-3 mt-4 pointer-events-auto"
+            animate={{ opacity: isExpanded ? 1 : 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_0_30px_hsl(var(--accent)/0.5)] transition-all duration-500">
+              <ArrowRight className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-mono text-xs tracking-[0.2em] text-accent uppercase">
+              View All
+            </span>
+          </motion.div>
+        )}
+
+        {/* Playing indicator */}
+        {!strip.isMoreLink && (
+          <motion.div
+            className="flex items-center gap-2 mt-3"
+            animate={{ opacity: isExpanded ? 0.7 : 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            <Play className="w-3 h-3 text-white/60 fill-white/60" />
+            <span className="font-mono text-[10px] tracking-[0.2em] text-white/50 uppercase">
+              Playing preview
+            </span>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Right separator */}
+      {index < strips.length - 1 && (
+        <div className="absolute top-0 right-0 w-[1px] h-full bg-white/[0.08] z-30" />
+      )}
+    </motion.div>
+  );
+};
+
+/* ─── Main Portfolio Section ─── */
+const PortfolioSection = () => {
+  const navigate = useNavigate();
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const handleStripClick = (index: number) => {
+    if (strips[index].isMoreLink) navigate('/more-work');
+  };
+
+  return (
+    <section id="portfolio" ref={sectionRef} className="relative bg-background">
+
+      {/* ── Section Header — tighter, with right-side count ── */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-10 sm:pt-14 pb-6 sm:pb-8">
+        <motion.div
+          className="flex items-end justify-between"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
+          {/* Left: label + heading */}
           <div>
             <span className="font-mono text-xs sm:text-sm tracking-[0.2em] text-accent uppercase">
               OUR WORK
             </span>
-            <h2 className="mt-2 sm:mt-4 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground">
-              Selected Projects.
+            <h2 className="mt-2 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground">
+              Our Work.
             </h2>
           </div>
 
-        </motion.div>
-
-        {/* Horizontal Track */}
-        <motion.div
-          ref={trackRef}
-          style={{ x }}
-          className="flex gap-6 sm:gap-10 md:gap-12 pl-[5vw] pr-[5vw] items-end pb-[12vh] will-change-transform"
-        >
-          {projects.map((project, index) => {
-            const cardStart = index / (projects.length + 1);
-            const cardEnd = (index + 1) / (projects.length + 1);
-
-            return (
-              <Gallery3DCard
-                key={index}
-                project={project}
-                index={index}
-                total={projects.length}
-                scrollYProgress={scrollYProgress}
-                cardStart={cardStart}
-                cardEnd={cardEnd}
-              />
-            );
-          })}
-
-          {/* End Card — View All Masterpieces */}
-          <div
-            onClick={() => navigate('/more-work')}
-            data-cursor-hover
-            className="flex-shrink-0 relative group flex flex-col items-center justify-center text-center rounded-[2rem] overflow-hidden transition-all duration-500 bg-[#0A0A0A] border border-accent/40 hover:border-accent/80 shadow-[0_0_40px_hsl(var(--accent)/0.15)] hover:shadow-[0_0_60px_hsl(var(--accent)/0.3)] mx-4 sm:mx-8 mr-[15vw] cursor-pointer"
-            style={{ width: 'clamp(320px, 40vw, 800px)', height: 'clamp(180px, 22.5vw, 450px)' }}
+          {/* Right: project count + scroll hint */}
+          <motion.div
+            className="hidden sm:flex flex-col items-end gap-1 pb-2"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.4 }}
           >
-            {/* Premium Inner Shadow Vignette */}
-            <div
-              className="absolute inset-0 pointer-events-none z-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.8)] sm:shadow-[inset_0_0_120px_rgba(0,0,0,0.9)] transition-shadow duration-500 group-hover:shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]"
-            />
-
-            {/* Delicate Ambient Orange Internal Glow */}
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-accent/5 via-transparent to-accent/5 opacity-60 z-0 group-hover:from-accent/10 group-hover:to-accent/10 transition-colors duration-700" />
-
-            <div className="relative z-10 flex flex-col items-center gap-6 pointer-events-none">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_0_40px_hsl(var(--accent)/0.6)] transition-all duration-500">
-                <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 text-white group-hover:translate-x-1 transition-transform duration-500" />
-              </div>
-              <h3 className="font-heading text-lg sm:text-2xl md:text-3xl text-white leading-snug group-hover:text-accent transition-colors duration-500">
-                View All<br />Masterpieces
-              </h3>
+            <span className="font-mono text-[10px] tracking-[0.25em] text-muted-foreground uppercase">
+              04 projects
+            </span>
+            <div className="flex items-center gap-2 text-muted-foreground/50">
+              <span className="font-mono text-[9px] tracking-widest uppercase">hover to explore</span>
+              <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+                <path d="M0 4H14M14 4L10 1M14 4L10 7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
-    </section>
-  );
-};
 
-/* ─── 3D Gallery Card ─── */
-const Gallery3DCard = ({
-  project,
-  index,
-  total,
-  scrollYProgress,
-  cardStart,
-  cardEnd,
-}: {
-  project: (typeof projects)[0];
-  index: number;
-  total: number;
-  scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'];
-  cardStart: number;
-  cardEnd: number;
-}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
-
-  // Spring-based tilt values for smooth mouse tracking
-  const tiltX = useSpring(0, { stiffness: 100, damping: 4, mass: 1.5 });
-  const tiltY = useSpring(0, { stiffness: 100, damping: 4, mass: 1.5 });
-  const liftZ = useSpring(0, { stiffness: 90, damping: 5, mass: 1.2 });
-  const jellyScale = useSpring(1, { stiffness: 120, damping: 4, mass: 1.5 });
-
-  // Calculate the card's rotateY based on its position in the gallery
-  // Cards further from center get more rotation = curved gallery effect
-  const cardCenter = (cardStart + cardEnd) / 2;
-  const baseRotateY = useTransform(
-    scrollYProgress,
-    [
-      Math.max(cardCenter - 0.3, 0),
-      cardCenter,
-      Math.min(cardCenter + 0.3, 1),
-    ],
-    [18, 0, -18]
-  );
-
-  // Removed Clip-path reveal so cards stay 16:9 permanently
-
-  // Title slide-up
-  const titleY = useTransform(
-    scrollYProgress,
-    [Math.max(cardStart - 0.05, 0), cardStart + 0.05],
-    [40, 0]
-  );
-  const titleOpacity = useTransform(
-    scrollYProgress,
-    [Math.max(cardStart - 0.05, 0), cardStart + 0.05],
-    [0, 1]
-  );
-
-  // Mouse tracking for hover tilt
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const mx = (e.clientX - rect.left) / rect.width;
-    const my = (e.clientY - rect.top) / rect.height;
-    setMousePos({ x: mx, y: my });
-    // Tilt toward cursor
-    tiltX.set((my - 0.5) * -35);
-    tiltY.set((mx - 0.5) * 35);
-    liftZ.set(120);
-    jellyScale.set(1.05);
-  }, [tiltX, tiltY, liftZ]);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-    tiltX.set(0);
-    tiltY.set(0);
-    liftZ.set(0);
-    jellyScale.set(1);
-  }, [tiltX, tiltY, liftZ]);
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className="flex-shrink-0 relative group cursor-pointer"
-      style={{
-        width: 'clamp(320px, 40vw, 800px)',
-        height: 'clamp(180px, 22.5vw, 450px)',
-        transformStyle: 'preserve-3d',
-        rotateY: isHovered ? tiltY : baseRotateY,
-        rotateX: tiltX,
-        translateZ: liftZ,
-        scale: jellyScale,
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      data-cursor-hover
-    >
-      {/* Card body with rounded corners and shadow */}
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-black relative">
-        {/* Card Image and Gradient */}
-        <motion.div
-          className="w-full h-full relative"
-        >
-          <GlitchImage
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full absolute inset-0"
-          />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
-        </motion.div>
-
-        {/* Glare/light reflection on hover */}
-        {isHovered && (
-          <div
-            className="absolute inset-0 pointer-events-none rounded-[inherit] z-20"
-            style={{
-              background: `radial-gradient(circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(255,255,255,0.08), transparent 50%)`,
-            }}
-          />
-        )}
-
-        {/* Title overlay */}
-        <motion.div
-          className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6 pointer-events-none z-10"
-          style={{ y: titleY, opacity: titleOpacity }}
-        >
-          <span className="font-mono text-[10px] sm:text-xs tracking-[0.2em] text-accent font-semibold uppercase mb-2 block opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-            {project.category}
-          </span>
-          <h3 className="font-heading text-lg sm:text-xl md:text-2xl text-white">
-            {project.title}
-          </h3>
-        </motion.div>
-
-        {/* Discover Badge */}
-        <div className="absolute top-5 right-5 sm:top-6 sm:right-6 bg-white/10 backdrop-blur-md rounded-full px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border border-white/10 pointer-events-none z-10">
-          <span className="font-mono text-[10px] sm:text-xs tracking-widest text-white uppercase">
-            Discover
-          </span>
-        </div>
-
-        {/* Side edge highlight for 3D feel */}
-        <div className="absolute top-0 right-0 w-[3px] h-full bg-gradient-to-b from-white/5 via-white/10 to-white/5 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b from-white/5 via-white/10 to-white/5 pointer-events-none" />
-      </div>
-
-      {/* Mirror floor reflection */}
-      <div
-        className="absolute left-0 right-0 h-[40%] rounded-2xl overflow-hidden pointer-events-none"
-        style={{
-          top: '100%',
-          transform: 'scaleY(-1) translateY(4px)',
-          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.25), transparent 70%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.25), transparent 70%)',
-          filter: 'blur(3px) brightness(0.6)',
-        }}
+      {/* ── 4 Horizontal Strips ── */}
+      <motion.div
+        className="w-full flex"
+        style={{ height: 'clamp(420px, 68vh, 780px)' }}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.25 }}
       >
-        <img
-          src={project.image}
-          alt=""
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
-    </motion.div>
+        {strips.map((strip, index) => (
+          <ProjectStrip
+            key={index}
+            strip={strip}
+            index={index}
+            isExpanded={expandedIndex === index}
+            anyExpanded={expandedIndex !== null}
+            onHover={() => setExpandedIndex(index)}
+            onLeave={() => setExpandedIndex(null)}
+            onClick={() => handleStripClick(index)}
+          />
+        ))}
+      </motion.div>
+    </section>
   );
 };
 

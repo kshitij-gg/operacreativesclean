@@ -7,7 +7,7 @@ interface ProcessStep {
   title: string;
   description: string;
   icon: React.ReactNode;
-  gradient: string;
+  accentColor: string;
   details: string[];
 }
 
@@ -17,7 +17,7 @@ const steps: ProcessStep[] = [
     title: 'Concept & Script',
     description: 'We tear down the brief and rebuild it as a cinematic vision. Scene-by-scene drafts, dialogues, mood references, and exact time-codes.',
     icon: <Lightbulb className="w-7 h-7" />,
-    gradient: 'from-amber-500 to-orange-600',
+    accentColor: 'hsl(var(--accent))',
     details: ['Ideation & Storyboarding', 'AI Script Refinement', 'Pacing & Time-coding'],
   },
   {
@@ -25,7 +25,7 @@ const steps: ProcessStep[] = [
     title: 'Look & Pre-viz',
     description: 'Before motion begins, we define the exact aesthetic — testing dozens of AI models to lock lighting, camera angles, and character consistency.',
     icon: <Palette className="w-7 h-7" />,
-    gradient: 'from-violet-500 to-purple-600',
+    accentColor: 'hsl(var(--accent))',
     details: ['Engine Selection', 'Lighting & Composition', 'Character Consistency'],
   },
   {
@@ -33,7 +33,7 @@ const steps: ProcessStep[] = [
     title: 'AI Production',
     description: 'The core generation phase. Massive compute power for motion tests, multi-variant rendering, and iterative loop engineering.',
     icon: <Cpu className="w-7 h-7" />,
-    gradient: 'from-cyan-500 to-blue-600',
+    accentColor: 'hsl(var(--accent))',
     details: ['Iterative Prompting', 'Motion Dynamics', 'Multi-Variant Renders'],
   },
   {
@@ -41,7 +41,7 @@ const steps: ProcessStep[] = [
     title: 'Post-production',
     description: 'Raw generations are the beginning. We stitch, grade, upscale, and master audio — turning AI fragments into theater-ready film.',
     icon: <Film className="w-7 h-7" />,
-    gradient: 'from-rose-500 to-red-600',
+    accentColor: 'hsl(var(--accent))',
     details: ['VFX Compositing', 'Cinematic Grading', 'Sound Mixing & Upscaling'],
   },
 ];
@@ -74,25 +74,23 @@ const BehindTheScenesSection = () => {
       ref={sectionRef}
       className="py-24 sm:py-32 md:py-40 relative bg-background overflow-clip"
     >
-      {/* ── Animated Background Elements ── */}
+      {/* ── Subtle Background Glow ── */}
       <motion.div
         className="absolute top-20 right-[10%] w-72 h-72 rounded-full pointer-events-none"
         style={{
           y: floatY1,
-          background: 'radial-gradient(circle, hsl(var(--accent) / 0.08), transparent 70%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(circle, hsl(var(--accent) / 0.06), transparent 70%)',
+          filter: 'blur(80px)',
         }}
       />
       <motion.div
         className="absolute bottom-20 left-[5%] w-96 h-96 rounded-full pointer-events-none"
         style={{
           y: floatY2,
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08), transparent 70%)',
-          filter: 'blur(80px)',
+          background: 'radial-gradient(circle, hsl(var(--accent) / 0.04), transparent 70%)',
+          filter: 'blur(100px)',
         }}
       />
-
-
 
       {/* Dot grid texture */}
       <div
@@ -130,7 +128,7 @@ const BehindTheScenesSection = () => {
               </p>
             </motion.div>
 
-            {/* Step Selector — Now with animated connector line */}
+            {/* Step Selector — animated connector line */}
             <div className="mt-12 sm:mt-14 relative">
               {/* Vertical connector */}
               <div className="absolute left-[22px] top-6 bottom-6 w-[2px] bg-border/30 rounded-full" />
@@ -187,7 +185,7 @@ const BehindTheScenesSection = () => {
             </div>
           </div>
 
-          {/* ── Right Column: Animated Content Stage ── */}
+          {/* ── Right Column: Premium Content Card ── */}
           <div
             className="lg:col-span-7 relative lg:min-h-[650px] flex items-center"
             onMouseEnter={() => setIsPaused(true)}
@@ -200,18 +198,21 @@ const BehindTheScenesSection = () => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -30, scale: 0.97 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full relative rounded-3xl overflow-hidden border border-border/30 shadow-2xl"
+                className="w-full relative rounded-3xl overflow-hidden border border-white/[0.06] shadow-2xl"
               >
-                {/* Card background with gradient mesh */}
-                <div className="absolute inset-0 bg-[#0a0a0a]" />
+                {/* Premium dark card background — NO whiteboard gradient */}
+                <div className="absolute inset-0 bg-[#080808]" />
+                
+                {/* Subtle accent glow — monochrome, consistent */}
                 <div
-                  className="absolute inset-0 opacity-20"
+                  className="absolute inset-0 opacity-[0.07]"
                   style={{
-                    backgroundImage: `radial-gradient(ellipse at 20% 50%, ${activeStep === 0 ? 'rgba(245,158,11,0.15)' : activeStep === 1 ? 'rgba(139,92,246,0.15)' : activeStep === 2 ? 'rgba(6,182,212,0.15)' : 'rgba(244,63,94,0.15)'}, transparent 60%)`,
+                    backgroundImage: 'radial-gradient(ellipse at 20% 50%, hsl(var(--accent) / 0.3), transparent 60%)',
                   }}
                 />
-                {/* Animated grid */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+
+                {/* Subtle grid texture */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808006_1px,transparent_1px),linear-gradient(to_bottom,#80808006_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
                 {/* Giant Number — Parallax feel */}
                 <motion.div
@@ -224,15 +225,15 @@ const BehindTheScenesSection = () => {
                 </motion.div>
 
                 <div className="relative z-10 p-8 sm:p-10 md:p-12">
-                  {/* Icon with animated glow */}
+                  {/* Icon — premium monochrome style, no colored gradient */}
                   <motion.div
                     className="mb-8 inline-flex relative"
                     initial={{ scale: 0, rotate: -20 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${activeData.gradient} blur-2xl opacity-40 scale-150`} />
-                    <div className={`relative p-4 sm:p-5 rounded-2xl bg-gradient-to-br ${activeData.gradient} text-white shadow-xl`}>
+                    <div className="absolute inset-0 bg-accent/20 blur-2xl opacity-40 scale-150" />
+                    <div className="relative p-4 sm:p-5 rounded-2xl bg-accent/10 border border-accent/20 text-accent shadow-xl backdrop-blur-sm">
                       {activeData.icon}
                     </div>
                   </motion.div>
@@ -255,9 +256,7 @@ const BehindTheScenesSection = () => {
                     {activeData.description}
                   </motion.p>
 
-
-
-                  {/* Detail pills with stagger */}
+                  {/* Detail pills */}
                   <div className="mt-10 flex flex-wrap gap-3">
                     {activeData.details.map((detail, idx) => (
                       <motion.span
@@ -265,17 +264,17 @@ const BehindTheScenesSection = () => {
                         initial={{ opacity: 0, scale: 0.8, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ delay: 0.3 + (idx * 0.1), type: 'spring', stiffness: 300 }}
-                        className="px-4 py-2 rounded-full bg-foreground/[0.06] border border-foreground/10 text-foreground/70 font-mono text-xs tracking-wide"
+                        className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] text-foreground/70 font-mono text-xs tracking-wide"
                       >
                         {detail}
                       </motion.span>
                     ))}
                   </div>
 
-                  {/* Progress bar at bottom */}
-                  <div className="mt-10 h-[3px] bg-foreground/5 rounded-full overflow-hidden">
+                  {/* Progress bar */}
+                  <div className="mt-10 h-[2px] bg-foreground/5 rounded-full overflow-hidden">
                     <motion.div
-                      className={`h-full bg-gradient-to-r ${activeData.gradient} rounded-full`}
+                      className="h-full bg-accent rounded-full"
                       initial={{ width: '0%' }}
                       animate={{ width: '100%' }}
                       transition={{ duration: isPaused ? 999 : 4.5, ease: 'linear' }}
@@ -296,8 +295,8 @@ const BehindTheScenesSection = () => {
                   </div>
                 </div>
 
-                {/* Glowing gradient bottom edge */}
-                <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${activeData.gradient} opacity-40`} />
+                {/* Accent bottom edge */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent/30" />
               </motion.div>
             </AnimatePresence>
           </div>

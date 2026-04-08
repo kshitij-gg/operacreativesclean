@@ -1,29 +1,22 @@
-import { useRef, useState } from 'react';
-import { ArrowRight, Sparkles, Zap, Layers, Wand2, Globe } from 'lucide-react';
+import { useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MagneticButton from '@/components/MagneticButton';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
-const capabilities = [
-  { icon: <Zap className="w-5 h-5" />, label: 'AI Generation', color: 'text-amber-400' },
-  { icon: <Layers className="w-5 h-5" />, label: '3D Motion', color: 'text-violet-400' },
-  { icon: <Wand2 className="w-5 h-5" />, label: 'VFX Studio', color: 'text-cyan-400' },
-  { icon: <Globe className="w-5 h-5" />, label: 'Global Delivery', color: 'text-emerald-400' },
-  { icon: <Sparkles className="w-5 h-5" />, label: 'Creative Direction', color: 'text-rose-400' },
-];
+const CALENDLY_URL = 'https://calendly.com/operacreatives';
 
 const CTASection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-15%' });
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
 
-  // Parallax for orbiting rings
-  const ringRotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const ring2Rotate = useTransform(scrollYProgress, [0, 1], [0, -120]);
-
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) element.scrollIntoView({ behavior: 'smooth' });
+  const openCalendly = () => {
+    // Try Calendly popup widget first, fallback to new tab
+    if ((window as any).Calendly) {
+      (window as any).Calendly.initPopupWidget({ url: CALENDLY_URL });
+    } else {
+      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
@@ -35,9 +28,7 @@ const CTASection = () => {
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 grain-overlay opacity-30 pointer-events-none" />
 
-
-
-      {/* ── 3. RADIAL GLOW — Pulsing light behind the main text ── */}
+      {/* ── Radial Glow ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <motion.div
           className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full"
@@ -58,19 +49,6 @@ const CTASection = () => {
 
       {/* ── Main Content ── */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 text-center">
-
-        {/* ── 4. CAPABILITY ORBIT — 5 floating skill pills that fan out ── */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
-          {capabilities.map((cap, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-foreground/[0.04] border border-foreground/10 backdrop-blur-sm cursor-default"
-            >
-              <span className={cap.color}>{cap.icon}</span>
-              <span className="font-mono text-xs tracking-wide text-foreground/60">{cap.label}</span>
-            </div>
-          ))}
-        </div>
 
         {/* Headline */}
         <motion.h2
@@ -102,7 +80,7 @@ const CTASection = () => {
           Your vision + our AI craft — let's bring it to life.
         </motion.p>
 
-        {/* CTA Button */}
+        {/* CTA Button — Book a Call via Calendly */}
         <motion.div
           className="mt-8 sm:mt-10"
           initial={{ opacity: 0, scale: 0 }}
@@ -111,15 +89,19 @@ const CTASection = () => {
         >
           <MagneticButton>
             <Button
-              onClick={scrollToContact}
+              onClick={openCalendly}
               className="group bg-accent hover:bg-accent/90 text-white rounded-full px-10 sm:px-14 py-6 sm:py-8 text-base sm:text-lg font-medium tracking-wide transition-all duration-300 hover:scale-105 shadow-[0_0_30px_hsl(var(--accent)/0.3)] hover:shadow-[0_0_60px_hsl(var(--accent)/0.5)]"
             >
-              Start a Project
+              Book a Call
               <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1.5" />
             </Button>
           </MagneticButton>
         </motion.div>
       </div>
+
+      {/* Calendly popup widget CSS/JS — loads async */}
+      <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+      <script src="https://assets.calendly.com/assets/external/widget.js" async />
     </section>
   );
 };

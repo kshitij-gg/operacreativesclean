@@ -12,8 +12,6 @@ import { useLocation } from 'react-router-dom';
 const AboutSection = lazy(() => import('@/components/AboutSection'));
 const PortfolioSection = lazy(() => import('@/components/PortfolioSection'));
 const BehindTheScenesSection = lazy(() => import('@/components/BehindTheScenesSection'));
-const ToolsSection = lazy(() => import('@/components/ToolsSection'));
-const LiquidDivider = lazy(() => import('@/components/LiquidDivider'));
 const CTASection = lazy(() => import('@/components/CTASection'));
 const ContactSection = lazy(() => import('@/components/ContactSection'));
 const Footer = lazy(() => import('@/components/Footer'));
@@ -60,7 +58,6 @@ const Index = () => {
 
           <Suspense fallback={<div className="h-40 w-full" />}>
             <div className="relative z-10 bg-background/80 backdrop-blur-3xl rounded-t-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)]">
-              <LiquidDivider color="accent" />
 
               <MarqueeBanner
                 text="AI FILMS ★ COMMERCIALS ★ VISUAL CAMPAIGNS ★ MOTION DESIGN ★ CREATIVE DIRECTION ★ "
@@ -73,8 +70,6 @@ const Index = () => {
                 <AboutSection />
               </SectionCurtain>
 
-              <LiquidDivider color="purple" />
-
               <MarqueeBanner
                 text="CONCEPT ★ STORYBOARD ★ AI PRODUCTION ★ POST-PRODUCTION ★ VFX ★ COLOR GRADING ★ "
                 speed={40}
@@ -84,20 +79,12 @@ const Index = () => {
 
               <PortfolioSection />
 
-              <LiquidDivider color="cyan" />
-
               {/* BTS Section — wrapped in curtain reveal */}
               <SectionCurtain>
                 <BehindTheScenesSection />
               </SectionCurtain>
 
-              <ToolsSection />
-
-              <LiquidDivider color="purple" />
-
               <CTASection />
-
-              <LiquidDivider color="accent" />
 
               <ContactSection />
             </div>

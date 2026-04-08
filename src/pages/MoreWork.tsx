@@ -20,9 +20,6 @@ const horizontalWorks = [
   { id: 'void-walker', image: portfolio2, title: 'VOID WALKER', client: 'GAMING STUDIO', category: 'AI Commercial', year: '2023' },
   { id: 'luminance', image: portfolio4, title: 'LUMINANCE', client: 'LUXURY BRAND', category: 'AI Film', year: '2023' },
   { id: 'spectrum-shift', image: portfolio3, title: 'SPECTRUM SHIFT', client: 'MUSIC LABEL', category: 'Visual Campaign', year: '2023' },
-  { id: 'obsidian-flow', image: portfolio1, title: 'OBSIDIAN FLOW', client: 'TECH BRAND', category: 'AI Commercial', year: '2023' },
-  { id: 'ethereal-pulse', image: portfolio4, title: 'ETHEREAL PULSE', client: 'STUDIO A', category: 'AI Film', year: '2023' },
-  { id: 'chrome-drift', image: portfolio2, title: 'CHROME DRIFT', client: 'AUTOMOTIVE', category: 'Visual Campaign', year: '2023' },
 ];
 
 const verticalWorks = [
@@ -32,8 +29,6 @@ const verticalWorks = [
   { id: 'vert-4', image: portfolio3, title: 'LIQUID CHROME', client: 'BEAUTY CO', category: 'Visual Campaign', year: '2023' },
   { id: 'vert-5', image: portfolio4, title: 'NIGHT RIDER', client: 'AUTOMOTIVE', category: 'AI Film', year: '2023' },
   { id: 'vert-6', image: portfolio2, title: 'BEAT DROP', client: 'MUSIC LABEL', category: 'AI Commercial', year: '2023' },
-  { id: 'vert-7', image: portfolio1, title: 'VELVET SKY', client: 'LUXURY BRAND', category: 'Visual Campaign', year: '2025' },
-  { id: 'vert-8', image: portfolio3, title: 'NEO TOKYO', client: 'GAMING STUDIO', category: 'AI Commercial', year: '2024' },
 ];
 
 const categories = ['All', 'AI Film', 'AI Commercial', 'Visual Campaign'] as const;
@@ -664,7 +659,7 @@ const MoreWork = () => {
   }, [filteredWorks]);
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-primary selection:text-black">
+    <div className="min-h-screen bg-black text-white selection:bg-primary selection:text-black overflow-x-hidden w-full relative">
 
       <Navbar />
 
@@ -754,7 +749,7 @@ const MoreWork = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 px-4 sm:px-8 md:px-12 w-full pb-20"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4 sm:px-8 md:px-12 w-full pb-20"
                   ref={(el) => { if (el && !verticalAnimationDone) { verticalAnimationDone = true; } }}
                 >
                   {verticalWorks.map((item, index) => (
