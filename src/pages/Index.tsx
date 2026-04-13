@@ -15,7 +15,6 @@ const AboutSection     = lazy(() => import('@/components/AboutSection'));
 const WeBelieveSection = lazy(() => import('@/components/WeBelieveSection'));
 const PortfolioSection = lazy(() => import('@/components/PortfolioSection'));
 const StaticAdsSection = lazy(() => import('@/components/StaticAdsSection'));
-const HowWeCreate      = lazy(() => import('@/components/HowWeCreateSection'));
 const CollaborateSection = lazy(() => import('@/components/CollaborateSection'));
 const Footer           = lazy(() => import('@/components/Footer'));
 
@@ -63,17 +62,8 @@ const Index = () => {
       <main>
 
         <Suspense fallback={<Fallback />}>
-          {/* Group 1: Hero and About (Parallax Curtain Mask Setup) */}
-          <div className="relative">
-            {/* ACT 1 — HERO with embedded showreel */}
-            <HeroSection />
-            
-            {/* ACT 2 — WHO WE ARE — crimson red #FF4B6E */}
-            <AboutSection />
-          </div>
-
-          {/* ACT 3 — WE BELIEVE — sub-scroll sky blue → mint → yellow */}
-          <WeBelieveSection />
+          {/* ACT 1 — HERO with embedded showreel */}
+          <HeroSection />
 
           {/* ACT 4 — OUR WORK — pure white */}
           <PortfolioSection />
@@ -81,8 +71,11 @@ const Index = () => {
           {/* ACT 4b — STATIC ADS — floating portrait gallery */}
           <StaticAdsSection />
 
-          {/* ACT 5 — HOW WE CREATE — tangerine #FFB347 */}
-          <HowWeCreate />
+          {/* ACT 3 — WE BELIEVE / Craft & Fidelity */}
+          <WeBelieveSection />
+
+          {/* ACT 2 — WHO WE ARE / AI Agents */}
+          <AboutSection />
 
           {/* ACT 6 — COLLABORATE — bright yellow #FFE066 */}
           <CollaborateSection />

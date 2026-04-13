@@ -241,7 +241,7 @@ const HeroSection = () => {
         <div className="absolute bottom-10 right-10 z-10 hidden sm:flex flex-col items-center">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: introDone ? 1 : 0, y: introDone ? 0 : 10 }} transition={{ delay: 1.0 }}>
             <button
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
               className="group w-[64px] h-[64px] rounded-2xl flex items-center justify-center cursor-pointer btn-3d btn-3d-pearl"
               aria-label="Scroll down"
             >

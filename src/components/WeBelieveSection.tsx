@@ -207,11 +207,10 @@ const WeBelieveSection = () => {
         }
       });
       // Using strict duration fractions for scrub timelines
-      // At 0 progress, body is inherited as '#1a0000' (maroon)
-      tl.to('body', { backgroundColor: '#FF7D00', duration: 0.25, ease: 'none' }, 0); // 0.0 to 0.25 -> Orange
-      tl.to('body', { backgroundColor: '#FFD166', duration: 0.25, ease: 'none' }, 0.25); // 0.25 to 0.50 -> Yellow
-      tl.to('body', { backgroundColor: '#B8E986', duration: 0.25, ease: 'none' }, 0.50); // 0.50 to 0.75 -> Green
-      tl.to('body', { backgroundColor: '#4FC3F7', duration: 0.25, ease: 'none' }, 0.75); // 0.75 to 1.00 -> Blue
+      tl.to(sectionRef.current, { backgroundColor: '#FF7D00', duration: 0.25, ease: 'none' }, 0); // 0.0 to 0.25 -> Orange
+      tl.to(sectionRef.current, { backgroundColor: '#FFD166', duration: 0.25, ease: 'none' }, 0.25); // 0.25 to 0.50 -> Yellow
+      tl.to(sectionRef.current, { backgroundColor: '#B8E986', duration: 0.25, ease: 'none' }, 0.50); // 0.50 to 0.75 -> Green
+      tl.to(sectionRef.current, { backgroundColor: '#4FC3F7', duration: 0.25, ease: 'none' }, 0.75); // 0.75 to 1.00 -> Blue
 
       // Text colors:
       // We force the initial state to be White, so it's perfectly readable on Maroon.
@@ -242,6 +241,7 @@ const WeBelieveSection = () => {
       className="relative w-full"
       style={{ 
         zIndex: 1, 
+        backgroundColor: '#FF6B8A',
         '--dynamic-text': '#FFFFFF', 
         '--dynamic-subtext': 'rgba(255,255,255,0.8)',
         '--dynamic-border': 'rgba(255,255,255,0.2)',
@@ -316,7 +316,7 @@ const WeBelieveSection = () => {
             className="flex flex-col justify-center order-1 lg:order-2"
           >
             <div className="font-heading italic tracking-tighter" style={{ fontSize: 'clamp(6rem, 12vw, 200px)', lineHeight: 0.8, color: 'var(--dynamic-text)' }}>
-              100x
+              10x
             </div>
             <div className="mt-6 mb-8 flex justify-start">
               <span className="font-mono text-[18px] sm:text-[22px] font-bold tracking-[0.4em] px-8 py-3 rounded-full border shadow-2xl backdrop-blur-md" style={{ color: 'var(--dynamic-text)', backgroundColor: 'var(--dynamic-pill-bg)', borderColor: 'var(--dynamic-border)' }}>
