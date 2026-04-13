@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import gsap from 'gsap';
+import gsap from 'gsap/dist/gsap';
 
 /**
  * SmoothScroll — Lenis driven by GSAP ticker.
