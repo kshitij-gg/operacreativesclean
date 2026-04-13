@@ -97,7 +97,7 @@ const CreatorStationSVG = ({ isAnimating }: { isAnimating: boolean }) => {
         {/* LEFT ARM (Animated Typing) */}
         <g style={{ animation: 'typingLeft 0.6s linear infinite', animationPlayState: animState, transformOrigin: '470px 350px' }}>
           <path d="M 475 330 Q 410 400 410 480 L 440 528" fill="none" stroke="#F8F4EC" strokeWidth="22" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M 475 330 Q 410 400 410 480 L 440 528" fill="none" stroke="#000" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" style={{ mixBlendMode: 'destination-over' }} />
+          <path d="M 475 330 Q 410 400 410 480 L 440 528" fill="none" stroke="#000" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" style={{ mixBlendMode: 'destination-over' as any }} />
           {/* Hand */}
           <circle cx="442" cy="530" r="14" fill="#FFE066" stroke="#000" strokeWidth="4" />
         </g>
@@ -105,7 +105,7 @@ const CreatorStationSVG = ({ isAnimating }: { isAnimating: boolean }) => {
         {/* RIGHT ARM (Animated Typing) */}
         <g style={{ animation: 'typingRight 0.8s linear infinite', animationPlayState: animState, transformOrigin: '530px 350px' }}>
           <path d="M 525 330 Q 590 400 590 480 L 550 525" fill="none" stroke="#F8F4EC" strokeWidth="22" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M 525 330 Q 590 400 590 480 L 550 525" fill="none" stroke="#000" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" style={{ mixBlendMode: 'destination-over' }} />
+          <path d="M 525 330 Q 590 400 590 480 L 550 525" fill="none" stroke="#000" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" style={{ mixBlendMode: 'destination-over' as any }} />
           {/* Hand */}
           <circle cx="548" cy="527" r="14" fill="#FFE066" stroke="#000" strokeWidth="4" />
         </g>
@@ -183,56 +183,85 @@ const AboutSection = () => {
     <section
       id="about"
       data-section="1"
-      data-bg="#FF4B6E"
+      data-bg="#1a0000"
       ref={sectionRef}
       className="py-20 sm:py-28 relative overflow-hidden flex items-center"
-      style={{ backgroundColor: '#FF4B6E', color: '#111111' }}
+      style={{ backgroundColor: '#1a0000', color: '#111111' }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10 w-full">
+      <div className="w-full mx-auto px-4 sm:px-8 lg:px-16 xl:px-24 relative z-10" style={{ maxWidth: '1800px' }}>
         
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center lg:items-center min-h-[90vh]">
           
-          {/* TEXT CONTENT LAYER (Left side, new unique typography, no buttons) */}
+          {/* TEXT CONTENT LAYER (Left side, minimal & elegant) */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }} 
             animate={isInView ? { opacity: 1, x: 0 } : {}} 
             transition={{ duration: 0.8, ease: [0.16,1,0.3,1] }}
+            className="flex flex-col z-10"
           >
-            {/* Technical Subheading */}
-            <h4 
-              className="font-mono uppercase tracking-[0.3em] font-bold mb-6" 
-              style={{ fontSize: '13px', color: '#111111' }}
-            >
-              The Next Evolution
-            </h4>
-
-            {/* Unique Headline Combination */}
-            <h2 className="font-heading" style={{ fontSize: 'clamp(54px, 7.5vw, 110px)', lineHeight: 0.85, color: '#FFFFFF', textTransform: 'uppercase' }}>
-              WE DON'T JUST<br />
-              <span style={{ color: '#111111' }}>SHOOT FILM.</span><br />
-              WE SYNTHESIZE<br />
-              REALITY.
+            {/* Headline */}
+            <h2 className="font-heading" style={{ fontSize: 'clamp(54px, 7vw, 100px)', lineHeight: 0.95, color: '#FFFFFF' }}>
+              Powered by<br />
+              <span style={{ color: '#CC0000', fontStyle: 'italic' }}>AI Agents.</span>
             </h2>
 
-            {/* Elegant Serif Body Copy */}
-            <div className="mt-8 ml-2 pl-6" style={{ borderLeft: '2px solid #111111' }}>
-              <p 
-                className="text-white/95 max-w-md" 
-                style={{ fontFamily: "'Georgia', 'Playfair Display', serif", fontSize: 'clamp(18px, 2vw, 22px)', fontStyle: 'italic', lineHeight: 1.6 }}
-              >
-                Our neural-driven workflows replace traditional sets with absolute creative freedom. Every frame is calculated. Every pixel is intentional.
-              </p>
+            {/* Main Paragraph */}
+            <p className="mt-8 text-white/80 max-w-xl font-body" style={{ fontSize: 'clamp(18px, 1.8vw, 22px)', lineHeight: 1.6 }}>
+              We don't just use AI to cut corners. We use it to build entirely new production workflows. From writing the first hook, to designing the visuals, to doing the final cut—our intelligent agents handle the heavy lifting so you get premium ads in a fraction of the time.
+            </p>
+
+            {/* Visual Pipeline Layout */}
+            <div className="mt-14 relative pl-[50px] space-y-8 max-w-xl">
+               {/* The continuous vertical line */}
+               <div className="absolute left-[19px] top-6 bottom-0 w-[2px] bg-gradient-to-b from-[#CC0000] via-[#CC0000]/40 to-transparent"></div>
+               
+               {/* Node 1 */}
+               <div className="relative group">
+                  <div className="absolute -left-[38px] top-6 w-4 h-4 rounded-full border-[2px] border-[#1a0000] bg-[#CC0000] shadow-[0_0_15px_#CC0000] z-10 transition-transform group-hover:scale-150"></div>
+                  <div className="bg-[#1f1111]/80 backdrop-blur-md border border-white/5 p-6 lg:p-8 rounded-[24px] hover:bg-[#2a1414] transition-colors shadow-2xl">
+                     <div className="text-[#CC0000] font-mono text-[11px] lg:text-[12px] tracking-[0.2em] mb-2 uppercase">Phase 01 // Ingestion</div>
+                     <h3 className="font-heading text-white text-[20px] lg:text-[22px] mb-2">Brand Intelligence</h3>
+                     <p className="text-white/60 font-body text-[14px] lg:text-[15px] leading-relaxed">
+                       We feed your brand guidelines, historical data, and aesthetic vectors into the orchestrator to establish baseline rules.
+                     </p>
+                  </div>
+               </div>
+
+               {/* Node 2 */}
+               <div className="relative group">
+                  <div className="absolute -left-[38px] top-6 w-4 h-4 rounded-full border-[2px] border-[#1a0000] bg-[#CC0000] shadow-[0_0_15px_#CC0000] z-10 transition-transform group-hover:scale-150"></div>
+                  <div className="bg-[#1f1111]/80 backdrop-blur-md border border-white/5 p-6 lg:p-8 rounded-[24px] hover:bg-[#2a1414] transition-colors shadow-2xl">
+                     <div className="text-[#CC0000] font-mono text-[11px] lg:text-[12px] tracking-[0.2em] mb-2 uppercase">Phase 02 // Synthesis</div>
+                     <h3 className="font-heading text-white text-[20px] lg:text-[22px] mb-2">Autonomous Creation</h3>
+                     <p className="text-white/60 font-body text-[14px] lg:text-[15px] leading-relaxed">
+                       Agents architect scripts, design visual assets, and render multi-channel variations at blistering speed without human bottlenecks.
+                     </p>
+                  </div>
+               </div>
+
+               {/* Node 3 */}
+               <div className="relative group">
+                  <div className="absolute -left-[38px] top-6 w-4 h-4 rounded-full border-[2px] border-[#1a0000] bg-[#CC0000] shadow-[0_0_15px_#CC0000] z-10 transition-transform group-hover:scale-150"></div>
+                  <div className="bg-[#1f1111]/80 backdrop-blur-md border border-white/5 p-6 lg:p-8 rounded-[24px] hover:bg-[#2a1414] transition-colors shadow-2xl">
+                     <div className="text-[#CC0000] font-mono text-[11px] lg:text-[12px] tracking-[0.2em] mb-2 uppercase">Phase 03 // Optimization</div>
+                     <h3 className="font-heading text-white text-[20px] lg:text-[22px] mb-2">Predictive Scaling</h3>
+                     <p className="text-white/60 font-body text-[14px] lg:text-[15px] leading-relaxed">
+                       We simulate A/B tests on variations to feed the algorithm your highest ROI angles before a single dollar is spent on deployment.
+                     </p>
+                  </div>
+               </div>
+
             </div>
           </motion.div>
 
-          {/* SVG ANIMATION LAYER (Right side, scaled up significantly) */}
+          {/* SVG ANIMATION LAYER (Right side) */}
           <motion.div
-            className="w-full relative z-0 flex justify-center lg:justify-end mt-12 lg:mt-0"
+            className="w-full relative z-0 flex flex-col items-center lg:items-end mt-16 lg:mt-0"
             initial={{ opacity: 0, scale: 0.95, x: 30 }}
             animate={isInView ? { opacity: 1, scale: 1, x: 0 } : {}}
             transition={{ duration: 1, ease: [0.16,1,0.3,1], delay: 0.2 }}
           >
-             {/* Massive container scaling up the SVG visually — breaks slightly out of bounds on desktop for forced scale */}
+             {/* Massive container scaling up the SVG visually */}
              <div className="w-[115%] sm:w-[125%] lg:w-[140%] xl:w-[150%] max-w-[1200px] -mr-[10%] lg:-mr-[25%] pointer-events-none">
                <CreatorStationSVG isAnimating={isInView} />
              </div>

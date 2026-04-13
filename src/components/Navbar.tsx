@@ -79,8 +79,8 @@ const Navbar = () => {
       {/* Wordmark Button — scrolls to top, never reloads (avoids re-triggering intro) */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="btn-3d inline-flex items-center justify-center font-heading text-[26px] sm:text-[28px] tracking-[0.08em] leading-none rounded px-6 py-2"
-        style={{ color: '#fff', backgroundColor: '#4A0E17', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}
+        className="inline-flex items-center justify-center font-heading text-[26px] sm:text-[28px] tracking-[0.08em] leading-none rounded px-6 py-2"
+        style={{ color: '#fff', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', boxShadow: 'none' }}
         aria-label="Back to top"
       >
         OPERA CREATIVES

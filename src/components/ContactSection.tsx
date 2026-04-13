@@ -81,7 +81,7 @@ const ContactSection = () => {
       ref={sectionRef}
       className="py-16 sm:py-24 md:py-32 bg-background"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="w-full mx-auto px-4 sm:px-8 lg:px-16" style={{ maxWidth: '1800px' }}>
 
         {/* Header */}
         <motion.div

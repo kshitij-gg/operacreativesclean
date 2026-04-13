@@ -1,0 +1,29 @@
+commit 1e0191d99da9f1b520c5725bad2beac973fd4896
+Author: kshitij-gg <kshiitijsatbhai1@gmail.com>
+Date:   Mon Apr 13 07:23:53 2026 +0530
+
+    feat: sync all current local files - complete project state with baton intro, maestro, and opera theme
+
+commit 5970650e9ddb304a9700de64929fea6400d208b3
+Author: kshitij-gg <kshiitijsatbhai1@gmail.com>
+Date:   Mon Apr 13 07:17:36 2026 +0530
+
+    fix: vendor gsap ESM files to bypass npm resolution issues on Vercel
+
+commit 356a1999cffea253d654d86f19c75611f97d75a6
+Author: kshitij-gg <kshiitijsatbhai1@gmail.com>
+Date:   Mon Apr 13 07:12:55 2026 +0530
+
+    fix: regenerated clean package-lock.json for Vercel
+
+commit a10dfc86df22d2c02754132679ecf22a05cb2a13
+Author: kshitij-gg <kshiitijsatbhai1@gmail.com>
+Date:   Mon Apr 13 07:08:52 2026 +0530
+
+    fix: use gsap/dist/ imports to bypass broken ESM exports on Vercel
+
+commit d0e65564618181898b10bf7cb8e1d55c616018ce
+Author: kshitij-gg <kshiitijsatbhai1@gmail.com>
+Date:   Mon Apr 13 07:05:10 2026 +0530
+
+    fix: remove module from mainFields so gsap resolves via main:dist/gsap.js on Vercel

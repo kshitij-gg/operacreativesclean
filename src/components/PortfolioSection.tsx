@@ -85,11 +85,10 @@ const StaticCard = ({ item, onOpen }: { item: typeof ROW1[0]; onOpen: (item: typ
     onClick={() => onOpen(item)}
     className="group relative overflow-hidden cursor-zoom-in flex-shrink-0"
     style={{
-      height: '47vh',        // half-screen height → 2 rows ≈ full viewport
-      aspectRatio: '3/4',    // width auto-derived ≈ 35vw
+      height: 'clamp(380px, 46vh, 700px)', // exactly scaled so ~2 rows fill the viewport
+      aspectRatio: '3/4',    
       borderRadius: 10,
-      marginRight: 14,
-      minHeight: 300,        // floor for very small screens
+      marginRight: 16, // slightly scaled up gap for larger photos
     }}
   >
     <img
@@ -177,7 +176,7 @@ const PortfolioSection = () => {
     >
       <Lightbox item={lightbox} onClose={() => setLightbox(null)} />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="w-full px-4 sm:px-8 lg:px-16" style={{ maxWidth: '1800px', margin: '0 auto' }}>
         {/* Header */}
         <motion.div className="text-center" initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
           <h2 className="font-heading animate-text-rainbow" style={{ fontSize: 'clamp(5rem,14vw,200px)', lineHeight: 0.85, textShadow: '4px 4px 0px rgba(0,0,0,1)' }}>OUR WORK.</h2>
@@ -196,7 +195,7 @@ const PortfolioSection = () => {
 
         {/* VISUAL ADS */}
         {activeTab === 'visual' && (
-          <div className="mt-16 flex flex-col gap-12 max-w-[1400px] mx-auto min-h-[1000px]">
+          <div className="mt-16 flex flex-col gap-12 w-full min-h-[1000px]">
             {visualProjects.map((p, i) => (
               <motion.div key={p.id} className="relative w-full rounded-xl overflow-hidden"
                 style={{ aspectRatio: '16/9', background: '#111', cursor: 'pointer' }}
@@ -217,23 +216,20 @@ const PortfolioSection = () => {
         )}
       </div>
 
-      {/* STATIC ADS — three scrolling marquee rows, all 3:4, with gaps */}
+      {/* STATIC ADS — three scrolling marquee rows, tight gap */}
       {activeTab === 'static' && (
         <motion.div
           className="mt-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
-          style={{ backgroundColor: '#0d0d0d', paddingTop: 32, paddingBottom: 32 }}
+          style={{ backgroundColor: '#0a0a0a', paddingTop: 24, paddingBottom: 24 }}
         >
-          {/* Full-bleed strip */}
-          <div style={{ position: 'relative', left: '50%', transform: 'translateX(-50%)', width: '100vw', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* Row 1 — drifts left */}
-            <MarqueeRow items={ROW1} direction="left"  speed={48} paused={!tabInView} onOpen={openLightbox} />
-            {/* Row 2 — drifts right */}
-            <MarqueeRow items={ROW2} direction="right" speed={38} paused={!tabInView} onOpen={openLightbox} />
-            {/* Row 3 — drifts left, slower */}
-            <MarqueeRow items={ROW3} direction="left"  speed={55} paused={!tabInView} onOpen={openLightbox} />
+          {/* Full-bleed strip — three rows */}
+          <div style={{ position: 'relative', left: '50%', transform: 'translateX(-50%)', width: '100vw', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <MarqueeRow items={ROW1} direction="right" speed={50} paused={!tabInView} onOpen={openLightbox} />
+            <MarqueeRow items={ROW2} direction="left" speed={45} paused={!tabInView} onOpen={openLightbox} />
+            <MarqueeRow items={ROW3} direction="right" speed={55} paused={!tabInView} onOpen={openLightbox} />
           </div>
         </motion.div>
       )}

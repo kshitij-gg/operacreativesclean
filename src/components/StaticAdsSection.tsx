@@ -24,44 +24,42 @@ const STATIC_IMAGES = [
 
 const Card = ({ item }: { item: typeof STATIC_IMAGES[0] }) => (
   <div
-    style={{ position: 'relative', flexShrink: 0, width: 220, height: 293, marginRight: 20, borderRadius: 12, overflow: 'hidden' }}
+    style={{ position: 'relative', flexShrink: 0, width: 440, height: 586, marginRight: 28, borderRadius: 16, overflow: 'hidden' }}
     className="group cursor-pointer"
   >
     <img
       src={item.src}
       alt={item.label}
-      width={220}
-      height={293}
+      width={440}
+      height={586}
       loading="lazy"
       decoding="async"
       style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease', willChange: 'transform' }}
       className="group-hover:scale-105"
     />
     <div
-      style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 16, textAlign: 'center', transition: 'background 0.35s ease' }}
+      style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center', transition: 'background 0.35s ease' }}
       className="group-hover:!bg-white/75"
     >
-      <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#8B0000', marginBottom: 8, opacity: 0, transition: 'opacity 0.3s' }} className="group-hover:!opacity-100">{item.cat}</span>
-      <h4 style={{ fontSize: 16, color: '#111', opacity: 0, transition: 'opacity 0.3s 0.05s', fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '0.04em' }} className="group-hover:!opacity-100">{item.label}</h4>
+      <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#8B0000', marginBottom: 10, opacity: 0, transition: 'opacity 0.3s' }} className="group-hover:!opacity-100">{item.cat}</span>
+      <h4 style={{ fontSize: 24, color: '#111', opacity: 0, transition: 'opacity 0.3s 0.05s', fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '0.04em' }} className="group-hover:!opacity-100">{item.label}</h4>
     </div>
-    <div style={{ position: 'absolute', top: 10, left: 10, transition: 'opacity 0.3s' }} className="group-hover:!opacity-0">
-      <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 8, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#111', background: 'rgba(255,255,255,0.88)', padding: '3px 8px', borderRadius: 99 }}>■ STATIC</span>
+    <div style={{ position: 'absolute', top: 14, left: 14, transition: 'opacity 0.3s' }} className="group-hover:!opacity-0">
+      <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#111', background: 'rgba(255,255,255,0.88)', padding: '4px 12px', borderRadius: 99 }}>■ STATIC</span>
     </div>
   </div>
 );
 
-const MarqueeRow = ({ items, reverse = false, speed = 40, paused = false }: { items: typeof STATIC_IMAGES; reverse?: boolean; speed?: number; paused?: boolean }) => {
+/* Single left-drifting marquee using the -50% trick for a seamless loop */
+const MarqueeRow = ({ items, speed = 55, paused = false }: { items: typeof STATIC_IMAGES; speed?: number; paused?: boolean }) => {
   const doubled = [...items, ...items];
-  const cardW   = 240;
-  const totalW  = items.length * cardW;
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
-      <div style={{ display: 'flex', width: totalW * 2, animation: `marquee-${reverse ? 'rev' : 'fwd'} ${speed}s linear infinite`, animationPlayState: paused ? 'paused' : 'running', willChange: 'transform' }}>
+      <div style={{ display: 'flex', width: 'max-content', animation: `static-marquee-left ${speed}s linear infinite`, animationPlayState: paused ? 'paused' : 'running', willChange: 'transform' }}>
         {doubled.map((item, i) => <Card key={`${item.id}-${i}`} item={item} />)}
       </div>
       <style>{`
-        @keyframes marquee-fwd { from { transform: translateX(0); } to { transform: translateX(-${totalW}px); } }
-        @keyframes marquee-rev { from { transform: translateX(-${totalW}px); } to { transform: translateX(0); } }
+        @keyframes static-marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
       `}</style>
     </div>
   );
@@ -74,7 +72,8 @@ const StaticAdsSection = () => {
   return (
     <section ref={ref} id="static-ads" data-section="3b" data-bg="#FAFAFA" style={{ backgroundColor: '#FAFAFA', paddingBottom: 80 }}>
       <motion.div
-        className="container mx-auto px-4 sm:px-6 lg:px-12 pt-20 pb-14"
+        className="w-full mx-auto px-4 sm:px-8 lg:px-16 pt-20 pb-14"
+        style={{ maxWidth: '1800px' }}
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-8%' }}
@@ -93,10 +92,7 @@ const StaticAdsSection = () => {
         </div>
       </motion.div>
 
-      <div style={{ marginBottom: 20 }}>
-        <MarqueeRow items={STATIC_IMAGES} reverse={false} speed={42} paused={!inView} />
-      </div>
-      <MarqueeRow items={[...STATIC_IMAGES].reverse()} reverse={true} speed={55} paused={!inView} />
+      <MarqueeRow items={STATIC_IMAGES} speed={50} paused={!inView} />
     </section>
   );
 };

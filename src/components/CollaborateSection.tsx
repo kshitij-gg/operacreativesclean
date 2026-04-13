@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { Send, Linkedin, Twitter, Instagram, Mail } from 'lucide-react';
 
 /* ─── ROBOT MOOD TYPE ─── */
 type RobotMood = 'idle' | 'happy1' | 'happy2' | 'clapping';
@@ -340,7 +340,7 @@ const CollaborateSection = () => {
 
       {/* Intro Typography */}
       <motion.div
-        className="relative z-30 text-center px-4 max-w-4xl mx-auto mb-4"
+        className="relative z-30 text-center px-4 max-w-4xl mx-auto mb-6 sm:mb-10"
         initial={{ opacity: 0, y: -20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -351,6 +351,15 @@ const CollaborateSection = () => {
         <h2 className="font-heading uppercase text-white drop-shadow-2xl" style={{ fontSize: 'clamp(40px, 8vw, 90px)', lineHeight: 0.9 }}>
           LET'S <span className="text-[#111]">COLLABORATE</span>
         </h2>
+        
+        {/* Cinematic Tagline Wrapper */}
+        <div className="flex items-center justify-center gap-3 sm:gap-6 mt-6 sm:mt-10">
+          <div className="h-[1px] w-12 sm:w-24 bg-gradient-to-r from-transparent to-white/30"></div>
+          <p className="font-mono text-white/70 text-[10px] sm:text-[13px] uppercase tracking-[0.25em] text-center">
+            Because every brand deserves a standing ovation.
+          </p>
+          <div className="h-[1px] w-12 sm:w-24 bg-gradient-to-l from-transparent to-white/30"></div>
+        </div>
       </motion.div>
 
       {/* ── THE CLAPPERBOARD FORM SET PIECE ── */}
@@ -400,16 +409,26 @@ const CollaborateSection = () => {
 
       </div>
 
-      {/* Footer tagline */}
-      <motion.p
-        className="relative z-30 mt-8 sm:mt-16 font-mono text-[9px] sm:text-[11px] tracking-[0.2em] uppercase text-center"
-        style={{ color: 'rgba(255,255,255,0.5)' }}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.9 }}
+      {/* Social Media Footer */}
+      <motion.div
+        className="relative z-30 pb-12 pt-8 flex items-center justify-center gap-8 sm:gap-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 0.9, duration: 0.5 }}
       >
-        DIRECTED BY OPERA CREATIVES · PRODUCED IN INDIA · EST. 2025
-      </motion.p>
+        <a href="#" className="text-[#FFE066] drop-shadow-[0_0_15px_rgba(255,224,102,0.8)] hover:drop-shadow-[0_0_25px_rgba(255,224,102,1)] hover:scale-125 transition-all duration-300">
+          <Linkedin size={28} />
+        </a>
+        <a href="#" className="text-[#FFE066] drop-shadow-[0_0_15px_rgba(255,224,102,0.8)] hover:drop-shadow-[0_0_25px_rgba(255,224,102,1)] hover:scale-125 transition-all duration-300">
+          <Twitter size={28} />
+        </a>
+        <a href="#" className="text-[#FFE066] drop-shadow-[0_0_15px_rgba(255,224,102,0.8)] hover:drop-shadow-[0_0_25px_rgba(255,224,102,1)] hover:scale-125 transition-all duration-300">
+          <Instagram size={28} />
+        </a>
+        <a href="#" className="text-[#FFE066] drop-shadow-[0_0_15px_rgba(255,224,102,0.8)] hover:drop-shadow-[0_0_25px_rgba(255,224,102,1)] hover:scale-125 transition-all duration-300">
+          <Mail size={28} />
+        </a>
+      </motion.div>
 
     </section>
   );

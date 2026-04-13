@@ -229,7 +229,7 @@ const HowWeCreateSection = () => {
       className="pt-16 sm:pt-24 pb-0 relative overflow-hidden flex items-center"
       style={{ backgroundColor: '#FFE066', color: '#111111' }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full max-w-[1400px]">
+      <div className="w-full mx-auto px-4 sm:px-8 lg:px-16 relative z-10" style={{ maxWidth: '1800px' }}>
         
         {/* Massive Title Above */}
         <motion.div 
