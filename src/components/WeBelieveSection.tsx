@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import gsap from 'gsap/dist/gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import gsap from '@/vendor/gsap';
+import { ScrollTrigger } from '@/vendor/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
