@@ -15,11 +15,10 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Explicit gsap aliases — fixes Rollup resolution on Vercel production builds
-      "gsap/ScrollTrigger": path.resolve(__dirname, "node_modules/gsap/ScrollTrigger.js"),
-      "gsap/ScrollToPlugin": path.resolve(__dirname, "node_modules/gsap/ScrollToPlugin.js"),
-      "gsap": path.resolve(__dirname, "node_modules/gsap/index.js"),
     },
+    // Force Rollup to use package.json "main" field (dist/gsap.js) not the "exports" map
+    mainFields: ["browser", "module", "main"],
+    conditions: ["browser", "module", "import", "default"],
   },
   optimizeDeps: {
     include: ["gsap", "gsap/ScrollTrigger"],
