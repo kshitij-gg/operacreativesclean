@@ -35,44 +35,21 @@ const BowIcon = ({ strumming }: { strumming: boolean }) => (
   </svg>
 );
 
-const LIGHT_SECTIONS = new Set([3, 4, 5, 6]);
-
 const Navbar = () => {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled]   = useState(false);
-  const [isDark, setIsDark]       = useState(false);
-  const [strumming, setStrumming] = useState(false);
 
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 60));
 
-  useEffect(() => {
-    const sections = document.querySelectorAll('[data-section]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const idx = Number((e.target as HTMLElement).dataset.section ?? 0);
-            setIsDark(LIGHT_SECTIONS.has(idx));
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  const textColor = isDark ? 'rgba(17,17,17,0.85)' : 'rgba(255,255,255,0.85)';
-  const hoverColor = isDark ? '#111' : '#fff';
-  const borderColor = isDark ? 'rgba(17,17,17,0.3)' : 'rgba(255,255,255,0.4)';
+  const borderColor = 'rgba(255,255,255,0.1)';
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 sm:px-10 h-20"
+      className="fixed top-3 left-4 right-4 z-[100] flex items-center justify-between px-6 sm:px-10 h-20 rounded-full"
       style={{
         backdropFilter: scrolled ? 'blur(16px) saturate(180%)' : 'none',
-        backgroundColor: scrolled ? (isDark ? 'rgba(255,255,255,0.88)' : 'rgba(0,0,0,0.55)') : 'transparent',
-        borderBottom: scrolled ? `1px solid ${borderColor}` : '1px solid transparent',
+        backgroundColor: scrolled ? 'rgba(0,0,0,0.55)' : 'transparent',
+        border: scrolled ? `1px solid ${borderColor}` : '1px solid transparent',
         transition: 'background-color 0.4s ease, border-color 0.4s ease',
       }}
     >

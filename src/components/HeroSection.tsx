@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { IntroContext } from '../contexts/IntroContext';
 
 // New Vimeo video: Nerolac Concept Ad
@@ -15,7 +15,7 @@ const vimeoEmbedUrl =
 // Background mode URL — api=1 enables postMessage pause/play control
 const vimeoBgUrl =
   `https://player.vimeo.com/video/${VIMEO_VIDEO_ID}` +
-  `?background=1&autoplay=1&loop=1&muted=1&transparent=0&autopause=0&api=1`;
+  `?background=1&autoplay=1&loop=1&muted=1&transparent=0&autopause=1&api=1`;
 
 // ── PostMessage helpers ─────────────────────────────────────────────────────
 function vimeoCmd(iframe: HTMLIFrameElement | null, method: 'pause' | 'play') {
@@ -76,6 +76,13 @@ const ShowreelLightbox = ({
 const HeroSection = () => {
   const introDone = useContext(IntroContext);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [isScrolledPast, setIsScrolledPast] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    // If scrolled past viewport, hide the sticky section from GPU entirely
+    setIsScrolledPast(y > window.innerHeight * 0.95);
+  });
 
   const bgRef      = useRef<HTMLIFrameElement>(null);   // background iframe
   const sectionRef = useRef<HTMLElement>(null);         // hero section element
@@ -111,7 +118,7 @@ const HeroSection = () => {
           pauseBg();
         }
       },
-      { threshold: 0.1 }   // pause when <10% of hero is in view
+      { threshold: 0 }   // strictly pause when fully out of view
     );
 
     observer.observe(section);
@@ -131,7 +138,7 @@ const HeroSection = () => {
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         {/* ── BACKGROUND VIDEO — full-bleed Vimeo, high brightness ── */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden" style={{ visibility: isScrolledPast ? 'hidden' : 'visible' }}>
           <iframe
             ref={bgRef}
             src={vimeoBgUrl}
